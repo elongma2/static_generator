@@ -8,8 +8,9 @@ import sys
 def main (): 
     if len(sys.argv) > 1:
         base_path = sys.argv[1]
-    else:
-        base_path = "/"
+    
+    if not base_path.endswith("/"):
+        base_path += "/"
 
     # get path
     src_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../static")
