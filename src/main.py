@@ -3,15 +3,24 @@ from htmlnode import LeafNode
 import os 
 import shutil
 from helper_func import generate_page,generate_pages_recursive
+import sys
 
 def main ():
+    if len(sys.argv) > 1:
+        base_path = sys.argv[1]
+    else:
+        base_path = "/"
+
     # get path
     src_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../static")
-    dest_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../public")
+    dest_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../docs")
 
     # convert to abs
     src_path = os.path.abspath(src_path)
     dest_path = os.path.abspath(dest_path)
+
+    # ✅ Ensure destination folder exists first
+    os.makedirs(dest_path, exist_ok=True)
 
     # delete files
     delete_files(dest_path)
@@ -23,7 +32,7 @@ def main ():
     from_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../content")
     template_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../template.html")
     
-    generate_pages_recursive(from_path, template_path, dest_path)
+    generate_pages_recursive(from_path, template_path, dest_path, base_path)
 
     print("Done")
 
@@ -35,11 +44,13 @@ def delete_files(folder_path):
 
         if os.path.isfile(file_path) or os.path.islink(file_path):
             os.remove(file_path)
+            print(f"Deleted: {file_path}")
 
         elif os.path.isdir(file_path):
             shutil.rmtree(file_path)
+            print(f"Deleted: {file_path}")
 
-    print(f"Deleted: {file_path}")
+    
 
 def copy_function(src, dest):
     if not os.path.exists(dest):
