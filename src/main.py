@@ -5,7 +5,7 @@ import shutil
 from helper_func import generate_page,generate_pages_recursive
 import sys
 
-def main ():
+def main (): 
     if len(sys.argv) > 1:
         base_path = sys.argv[1]
     else:

@@ -239,7 +239,7 @@ def extract_title(markdown):
     raise Exception("no h1 header found")
 
 def generate_page(from_path,template_path,dest_path,base_path):
-    print(f"generating page from {from_path} to {dest_path} using {template_path}")
+    print(f"generating page from {from_path} to {dest_path} using {template_path} using {base_path}")
 
     #read markdown and template files
     from_path_content = open(from_path).read()
@@ -247,6 +247,10 @@ def generate_page(from_path,template_path,dest_path,base_path):
 
 
     markdown_nodes = markdown_to_html_nodes(from_path_content).to_html()
+
+     # 🔥 VERY IMPORTANT: Replace href/src inside markdown HTML output
+    markdown_nodes = markdown_nodes.replace('href="/', f'href="{base_path}')
+    markdown_nodes = markdown_nodes.replace('src="/', f'src="{base_path}')
 
     #extract title
     title = extract_title(from_path_content)
@@ -258,7 +262,7 @@ def generate_page(from_path,template_path,dest_path,base_path):
     #replace base path
     template_path_content = template_path_content.replace('href="/' ,  f'href="{base_path}')
     template_path_content = template_path_content.replace('src="/' ,  f'src="{base_path}')
-    
+
     # Write output
     with open(dest_path, "w") as f:
         f.write(template_path_content)
