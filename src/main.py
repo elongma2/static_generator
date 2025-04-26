@@ -10,7 +10,6 @@ def main ():
         base_path = sys.argv[1]
     else:
         base_path = "/"
-
     # get path
     src_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../static")
     dest_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../docs")
